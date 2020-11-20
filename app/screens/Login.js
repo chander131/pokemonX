@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { withNavigation } from 'react-navigation';
+import { withNavigation, NavigationActions } from 'react-navigation';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
 import googleConfig from '@config/googleConfig';
+import Cargando from '@components/Cargando';
 
-const Login = () => { 
+const Login = props => {
 	const [user, setUser ] = useState(null);
 	const [loggedIn, setLoggedIn ] = useState(false);
-	const [loading, setLoading ] = useState(false);
+	const [loading, setLoading ] = useState(true);
 
 	const signInWithFirebase = async ()=>{
 		setLoading(true);
@@ -22,24 +23,35 @@ const Login = () => {
 			const firebaseUserCredential = await auth().signInWithCredential(credential);
 
 			console.log('SUCCESS LOGIN -> ', firebaseUserCredential);
+			props.navigation.reset([NavigationActions.navigate({routeName: 'Regiones'})], 0);
 		} catch (e) { console.log('ERROR 456 -> signInWithFirebase', e); }
 		setLoading(false);
 	};
 
+	const verificarSession = async () => {
+		const dataUser = await GoogleSignin.getCurrentUser();
+		if (dataUser) {
+			props.navigation.reset([NavigationActions.navigate({routeName: 'Regiones'})], 0);
+		}
+	};
+
 	useEffect(()=>{
 		googleConfig();
-	},[]);
+		verificarSession();
+	}, []);
 
 	return (
 		<View style={styles.container}>
-			<View style={styles.content}>
-				<GoogleSigninButton
-					style={{ width: 220, height: 60 }}
-					size={GoogleSigninButton.Size.Wide}
-					color={GoogleSigninButton.Color.Dark}
-					onPress={signInWithFirebase}
-					disabled={loading}/>
-			</View>
+			{ loading ? <Cargando /> : (
+				<View style={styles.content}>
+					<GoogleSigninButton
+						style={{ width: 220, height: 60 }}
+						size={GoogleSigninButton.Size.Wide}
+						color={GoogleSigninButton.Color.Dark}
+						onPress={signInWithFirebase}
+						disabled={loading}/>
+				</View>
+			)}
 		</View>
 	);
 };

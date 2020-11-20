@@ -6,6 +6,7 @@ import { Easing, Animated } from 'react-native';
 import Index from '@screens/Index';
 import Login from '@screens/Login';
 import Registro from '@screens/Registro';
+import Regiones from '@screens/Regiones';
 
 const SlideFromRight = (index, position, width)=>{
 	const translateX = position.interpolate({
@@ -66,20 +67,25 @@ const NavigationOptions = () =>{
 
 const AppNavigator = createStackNavigator({
 	Index:{
-		screen:Index,
-		navigationOptions:{
-			title:'Index',
-		},
-	},
-	Login:{
 		screen:Login,
 		navigationOptions:{
 			title:'Login',
 		},
 	},
+	// Login:{
+	// 	screen:Login,
+	// 	navigationOptions:{
+	// 		title:'Login',
+	// 	},
+	// },
 	Registro:{
 		screen:Registro,
 		navigationOptions:{ title:'Registro' },
+
+	},
+	Regiones:{
+		screen:Regiones,
+		navigationOptions:{ title:'Regiones' },
 
 	},
 },{
