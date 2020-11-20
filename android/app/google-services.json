@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "786987080102",
+    "firebase_url": "https://pokemonx-c3c2e.firebaseio.com",
+    "project_id": "pokemonx-c3c2e",
+    "storage_bucket": "pokemonx-c3c2e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:786987080102:android:9101ffa7e2908c9a949767",
+        "android_client_info": {
+          "package_name": "com.pokemonx"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "786987080102-do4pbhe9quvp72k5s4sdgen3g540e6dv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pokemonx",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "786987080102-1r05daq64djr78lpi8ambe41rldofc4s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pokemonx",
+            "certificate_hash": "fb26f46bc942486b3aa4733a3cce4e4c7dc55134"
+          }
+        },
+        {
+          "client_id": "786987080102-h5akdt6ijuqddi352e1s9nha1v4t9gvp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEpQQ9uPIxy0OqdIVn2cFEHewhSBfNJiE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "786987080102-h5akdt6ijuqddi352e1s9nha1v4t9gvp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
