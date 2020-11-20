@@ -5,7 +5,7 @@ import auth from '@react-native-firebase/auth';
 import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
 import googleConfig from '@config/googleConfig';
 
-const Login = () => {
+const Login = () => { 
 	const [user, setUser ] = useState(null);
 	const [loggedIn, setLoggedIn ] = useState(false);
 	const [loading, setLoading ] = useState(false);
@@ -21,7 +21,7 @@ const Login = () => {
 			const credential = auth.GoogleAuthProvider.credential(userInfo.idToken, userInfo.accessToken);
 			const firebaseUserCredential = await auth().signInWithCredential(credential);
 
-			console.log('SUCCESS LOGIN', firebaseUserCredential);
+			console.log('SUCCESS LOGIN -> ', firebaseUserCredential);
 		} catch (e) { console.log('ERROR 456 -> signInWithFirebase', e); }
 		setLoading(false);
 	};
