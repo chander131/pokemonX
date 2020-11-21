@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { withNavigation, NavigationActions } from 'react-navigation';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
 import googleConfig from '@config/googleConfig';
-import Cargando from '@components/Cargando';
+import Colors from '@helpers/Colors';
 
 const Login = props => {
 	const [user, setUser ] = useState(null);
@@ -42,7 +42,7 @@ const Login = props => {
 
 	return (
 		<View style={styles.container}>
-			{ loading ? <Cargando /> : (
+			{ loading ? <ActivityIndicator style={styles.loader} size='large' color={Colors.Salmon} /> : (
 				<View style={styles.content}>
 					<GoogleSigninButton
 						style={{ width: 220, height: 60 }}
@@ -66,6 +66,11 @@ const styles = StyleSheet.create({
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
+	},
+	loader: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		flex: 1,
 	},
 });
 

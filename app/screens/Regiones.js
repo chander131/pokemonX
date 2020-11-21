@@ -33,12 +33,6 @@ const Regiones = ({ navigation }) => {
 
 	useEffect(() => {
 		fetchData();
-		// Linking.getInitialURL().then(url => {
-		// 	if (url) {urlHandler(url);}
-		// });
-		// Linking.addEventListener('url', handleOpenUrl);
-		// return ()=> Linking.removeEventListener('url', handleOpenUrl);
-
 	}, []);
 
 	return (
@@ -48,7 +42,7 @@ const Regiones = ({ navigation }) => {
 				<View style={styles.containerCard}>
 					{data.map(({ name }, i) => (
 						<CardRegion
-							action={() => navigation.navigate('Team', { name: name })}
+							action={() => navigation.navigate('Equipos', { name: name })}
 							key={i}
 							text={name}
 							index={i}

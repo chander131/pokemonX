@@ -11,7 +11,7 @@ const Card = ({ text, action, color, index }) => {
 			onPress={action}
 			style={[styles.card, {backgroundColor: color ? color : cardColors[getColor(index)]}]}
 		>
-			<Text style={[styles.cardText]}>{text}</Text>
+			<Text style={styles.cardText}>{text}</Text>
 		</TouchableOpacity>
 	);
 };
@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
 	card: {
 		flexDirection: 'row',
 		alignItems: 'center',
+		justifyContent: 'center',
 		width: '46%',
 		height: 85,
 		borderRadius: 12,
