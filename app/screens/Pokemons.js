@@ -14,7 +14,7 @@ import { urlRegionByName } from '@config/pathsPokeApi';
 import { Fonts } from '@helpers/Fonts';
 import Colors from '@helpers/Colors';
 
-const Pokemons = ({ navigation: { navigate, state: { params, routeName} } }) => {
+const Pokemons = ({ navigation: { navigate, state: { params, routeName } } }) => {
 	const dataTeam = useSelector((state) => state.teams.curremItem);
 	const [data, setData] = useState([]);
 	const [pokedexSize, setPokedexSize] = useState(-1);
@@ -75,6 +75,7 @@ const Pokemons = ({ navigation: { navigate, state: { params, routeName} } }) => 
 		setpokedexItem(0);
 		setPokedexSize(-1);
 		fetchData();
+		console.log('data team', dataTeam);
 	}, []);
 
 	return (
@@ -99,7 +100,7 @@ const Pokemons = ({ navigation: { navigate, state: { params, routeName} } }) => 
 									{filteredData.map((el, index) =>
 										<CardListPokemon
 											action={() =>
-												navigate('PokemonDetails', {
+												navigate('DetallesPokemon', {
 													url: el.pokemon_species.url,
 													name: el.pokemon_species.name,
 													isAdding: params.isAdding,

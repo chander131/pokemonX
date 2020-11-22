@@ -12,14 +12,16 @@ import { withNavigation } from 'react-navigation';
 import { useSelector } from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import database from '@react-native-firebase/database';
 
 import Layout from '@components/Layout';
 import Badge from '@components/Badge';
 import SinDatos from '@components/SinDatos';
 
-import { Fonts } from '@helpers/Fonts';
 import Colors from '@helpers/Colors';
+import { Fonts } from '@helpers/Fonts';
 import { normalize } from '@helpers/dimensions';
+import generateToken from '@helpers/firebase/generateToken';
 
 import Pokeball from '@images/pokeball.png';
 
@@ -29,12 +31,26 @@ const DetallesEquipo = ({ navigation: { navigate, state: { params, routeName } }
 	const [listPokemons, setListPokemons] = useState([]);
 	const [selectedIndex, setSelectedIndex] = useState(-1);
 	const [isRemoveModalVisible, setIsRemoveModalVisible] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(false);
 
 	useEffect(() => {
 		console.log('currem item', dataTeam);
 	}, [dataTeam]);
 
-	const addTeam = () => {};
+	const addTeam = async () => {
+		setLoading(true);
+		const token = await generateToken();
+		database().ref('teams').push({
+			...dataTeam,
+			token,
+			name: nameTeam,
+		});
+		setIsSuccessModalVisible(true);
+		setLoading(false);
+		navigate('Equipos');
+	};
+
 	const updateTeam = () => {};
 
 	const handleOpenItem = (index) => {
@@ -43,10 +59,19 @@ const DetallesEquipo = ({ navigation: { navigate, state: { params, routeName } }
 		setListPokemons([...modData]);
 	};
 
+	const transformData = () => {
+		const { pokemons } = dataTeam;
+		const list = [];
+		for (const item of pokemons) {
+			list.push({...item, isOpen: false});
+		}
+		setListPokemons(list);
+	};
+
 	const ViewActionTeam = () => (
 		<TouchableOpacity
 			style={styles.containerActionTeam}
-			onPress={params.isAding ? addTeam() : updateTeam()}
+			onPress={params.isAdding ? addTeam : updateTeam}
 		>
 			<Text style={styles.textActionTeam}>Guardar Equipo</Text>
 		</TouchableOpacity>
@@ -123,6 +148,14 @@ const DetallesEquipo = ({ navigation: { navigate, state: { params, routeName } }
 		);
 	};
 
+	useEffect(() => {
+		if (!isRemoveModalVisible) {setSelectedIndex(-1);}
+	}, [isRemoveModalVisible]);
+
+	useEffect(() => {
+		transformData();
+	}, [dataTeam]);
+
 	return (
 		<Layout>
 			<View style={styles.container}>
@@ -184,6 +217,45 @@ const styles = StyleSheet.create({
 		padding: 0,
 		fontFamily: Fonts.MontserratRegular,
 		paddingHorizontal: 5,
+	},
+	list: {
+		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-evenly',
+	},
+	actions: {
+		flex: 2,
+		flexDirection: 'row',
+		justifyContent: 'space-evenly',
+		alignItems: 'center',
+	},
+	description: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	descriptionText: {
+		fontFamily: Fonts.MontserratRegular,
+		fontSize: normalize(13),
+	},
+	moreBtn: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		height: 50,
+	},
+	more: {
+		fontFamily: Fonts.MontserratBold,
+		color: Colors.Blue,
+	},
+	icon: {
+		width: 70,
+		height: 70,
+	},
+	image: {
+		width: 35,
+		height: 35,
 	},
 });
 

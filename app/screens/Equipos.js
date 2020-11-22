@@ -3,17 +3,21 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { withNavigation } from 'react-navigation';
 import { useDispatch } from 'react-redux';
+import database from '@react-native-firebase/database';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Layout from '@components/Layout';
+import SinDatos from '@components/SinDatos';
 
-import { normalize } from '@helpers/dimensions';
-import { Fonts } from '@helpers/Fonts';
 import Colors from '@helpers/Colors';
+import { Fonts } from '@helpers/Fonts';
+import { normalize } from '@helpers/dimensions';
 import { setCurrentTeam } from '@actions/teams.action';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Equipos = ({ navigation: { navigate, state: { params, routeName} } }) => {
 	const dispatch = useDispatch();
-	const [equipos, setEquipos] = useState([1]);
+	const [equipos, setEquipos] = useState([]);
 
 	const nuevoEquipo = () => {
 		const detalles = {
@@ -28,8 +32,38 @@ const Equipos = ({ navigation: { navigate, state: { params, routeName} } }) => {
 		navigate('DetallesEquipo', { isAdding: true });
 	};
 
+	const transformData = (teams) => {
+		const list = [];
+		if (teams) {
+			for (const key in teams) {
+				teams[key].key = key;
+				list.push(teams[key]);
+			}
+		}
+		setEquipos(list);
+	};
+
+	const deleteTeam = (key) => {
+		// setIsRemoveModalVisible(false);
+		database().ref('teams').child(key).remove();
+		// getTeams();
+	};
+
 	useEffect(() => {
-		// console.log(params.name);
+		const onValueChange = database().ref()
+			.child('teams')
+			.orderByChild('region_user')
+			.equalTo(`${params.name}_${auth().currentUser.uid}`)
+			.on('value', snapshot => {
+				if (snapshot) {
+					transformData(snapshot.val());
+				}
+			});
+
+		return () =>
+			database()
+				.ref(`/teams`)
+				.off('value', onValueChange);
 	}, []);
 
 	return (
@@ -50,11 +84,39 @@ const Equipos = ({ navigation: { navigate, state: { params, routeName} } }) => {
 					<Text style={styles.options}>Obtener equipo amigo</Text>
 				</TouchableOpacity>
 
-				{equipos.length > 0 && (
+				<ScrollView>
 					<View style={styles.containerEquipos}>
-						<Text>Mis Equipos</Text>
+						<Text style={styles.myTeamsTitle}>Mis Equipos</Text>
+						{equipos.length > 0 ? (
+							<View style={styles.myTeams}>
+								{equipos.map((el, index) =>
+									<View key={index} style={styles.myItemTeams}>
+										<View style={{width: '60%', height: 20}}>
+											<Text style={styles.myTeamsText}>{el.name}</Text>
+										</View>
+										<TouchableOpacity
+											onPress={() => {
+												// onShare(el);
+											}}
+										>
+											<Icon name='share' size={25} color={Colors.DarkGray} />
+										</TouchableOpacity>
+										{/* <TeamEditor onSetDetails={setTeamDetails} item={el} /> */}
+										<TouchableOpacity
+											onPress={() => {
+												// setSelectedKey(el.key),
+												// setIsRemoveModalVisible(true);
+												deleteTeam(el.key);
+											}}
+										>
+											<Icon name='trash' size={25} color={Colors.DarkGray} />
+										</TouchableOpacity>
+									</View>
+								)}
+							</View>
+						) : (<SinDatos />)}
 					</View>
-				)}
+				</ScrollView>
 				<View style={styles.containerCard} />
 			</View>
 		</Layout>
@@ -104,9 +166,41 @@ const styles = StyleSheet.create({
 		fontSize: normalize(16),
 	},
 	containerEquipos: {
+		flexDirection: 'column',
+		justifyContent: 'space-around',
 		alignItems: 'center',
 		marginTop: 20,
 		padding: 10,
+	},
+	myTeams: {
+		display: 'flex',
+		flexDirection: 'column',
+		width: '100%',
+	},
+	myTeamsTitle: {
+		fontSize: normalize(16),
+		fontFamily: Fonts.MontserratBold,
+	},
+	myItemTeams: {
+		marginVertical: 10,
+		borderRadius: 12,
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 5,
+		backgroundColor: Colors.White,
+		flexDirection: 'row',
+		justifyContent: 'space-around',
+		height: 60,
+		alignItems: 'center',
+	},
+	myTeamsText: {
+		fontFamily: Fonts.Muli,
+		fontSize: normalize(14),
 	},
 });
 

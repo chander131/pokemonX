@@ -2,7 +2,14 @@ import { SET_CURRENT_TEAM, SET_TEAMS } from '@actions/teams.action';
 
 const initialState = {
 	teams: [],
-	curremItem: null,
+	curremItem: {
+		token: '',
+		name: '',
+		user_id: '',
+		region_name: '',
+		region_user: '',
+		pokemons: [],
+	},
 };
 
 export default (state = initialState, action) => {
@@ -15,7 +22,7 @@ export default (state = initialState, action) => {
 	case SET_CURRENT_TEAM:
 		return {
 			...state,
-			curremItem: action.payload,
+			curremItem: {...action.payload},
 		};
 	default: return state;
 	}
