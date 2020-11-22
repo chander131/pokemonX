@@ -25,7 +25,6 @@ const Regiones = ({ navigation }) => {
 	useEffect(() => {
 		if (!state.isLoading) {
 			if (state.isSuccess && state.data) {
-				console.log('data api', state.data.results);
 				setData(state.data.results);
 			}
 		}

@@ -21,8 +21,6 @@ const Login = props => {
 
 			const credential = auth.GoogleAuthProvider.credential(userInfo.idToken, userInfo.accessToken);
 			const firebaseUserCredential = await auth().signInWithCredential(credential);
-
-			console.log('SUCCESS LOGIN -> ', firebaseUserCredential);
 			props.navigation.reset([NavigationActions.navigate({routeName: 'Regiones'})], 0);
 		} catch (e) { console.log('ERROR 456 -> signInWithFirebase', e); }
 		setLoading(false);
