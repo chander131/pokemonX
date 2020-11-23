@@ -35,15 +35,13 @@ yarn build:apk
 
 ## Funcionalidades implementadas
 
+* Redux.
 * Alias path.
 * Custom fonts.
 * Cacheo de imágenes.
-* React navigation config en su quinta versión.
-* Redux.
-* Splash screen.
 * Realtime Database.
-* Firebase Auth para autenticación de usuarios con gmail.
 * Firebase Crashlytics.
+* Firebase Auth para autenticación de usuarios con gmail.
 * Uso de la [api de pokemón](https://pokeapi.co/).
 
 ## Screens
