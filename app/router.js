@@ -9,6 +9,7 @@ import Equipos from '@screens/Equipos';
 import DetallesEquipo from '@screens/DetallesEquipo';
 import Pokemons from '@screens/Pokemons';
 import DetallesPokemon from '@screens/DetallesPokemon';
+import EquipoAmigo from '@screens/EquipoAmigo';
 
 const SlideFromRight = (index, position, width)=>{
 	const translateX = position.interpolate({
@@ -95,6 +96,10 @@ const AppNavigator = createStackNavigator({
 	DetallesPokemon:{
 		screen:DetallesPokemon,
 		navigationOptions:{ title:'DetallesPokemon' },
+	},
+	EquipoAmigo:{
+		screen:EquipoAmigo,
+		navigationOptions:{ title:'EquipoAmigo' },
 	},
 },{
 	headerMode:'none',

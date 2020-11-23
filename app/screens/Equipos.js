@@ -106,6 +106,7 @@ const Equipos = ({ navigation: { navigate, state: { params, routeName} } }) => {
 				</TouchableOpacity>
 				<TouchableOpacity
 					style={[styles.equipoAmigo, styles.botonAction]}
+					onPress={() => navigate('EquipoAmigo')}
 				>
 					<Text style={styles.options}>Obtener equipo amigo</Text>
 				</TouchableOpacity>

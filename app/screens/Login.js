@@ -16,21 +16,24 @@ const Login = props => {
 		try {
 			await GoogleSignin.hasPlayServices();
 			const userInfo = await GoogleSignin.signIn();
+			console.log('user info', userInfo);
 			setUser(userInfo);
 			setLoggedIn(true);
 
 			const credential = auth.GoogleAuthProvider.credential(userInfo.idToken, userInfo.accessToken);
 			const firebaseUserCredential = await auth().signInWithCredential(credential);
-			props.navigation.reset([NavigationActions.navigate({routeName: 'Regiones'})], 0);
+			userInfo && props.navigation.reset([NavigationActions.navigate({routeName: 'Regiones'})], 0);
 		} catch (e) { console.log('ERROR 456 -> signInWithFirebase', e); }
 		setLoading(false);
 	};
 
 	const verificarSession = async () => {
+		setLoading(true);
 		const dataUser = await GoogleSignin.getCurrentUser();
 		if (dataUser) {
 			props.navigation.reset([NavigationActions.navigate({routeName: 'Regiones'})], 0);
 		}
+		setLoading(false);
 	};
 
 	useEffect(()=>{

@@ -7,13 +7,28 @@ import {
 } from 'react-native';
 import { withNavigation, NavigationActions } from 'react-navigation';
 import auth from '@react-native-firebase/auth';
+import { GoogleSignin } from 'react-native-google-signin';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Logo from '@images/pokemon.png';
+import Colors from '@helpers/Colors';
 
 const Header = props => {
-	const [user, setUser] = useState();
+	const [user, setUser] = useState(null);
 
 	const onAuthStateChanged = userData => setUser(userData);
+
+	const signOut = async () => {
+		auth().signOut();
+		try {
+			await GoogleSignin.revokeAccess();
+			await GoogleSignin.signOut();
+			setUser({ user: null });
+			user && props.navigation.navigate('Index');
+		} catch (e) {
+			console.error('ERROR 45', e);
+		}
+	};
 
 	useEffect(() => {
 		const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
@@ -34,6 +49,16 @@ const Header = props => {
 					resizeMode='contain'
 				/>
 			</TouchableOpacity>
+			{user && (
+				<View style={styles.containerLogOut}>
+					<Icon
+						onPress={signOut}
+						name='power-off'
+						size={30}
+						color={Colors.White}
+					/>
+				</View>
+			)}
 		</View>
 	);
 };
@@ -54,6 +79,10 @@ const styles = StyleSheet.create({
 	imgLogo: {
 		width: '50%',
 		height: '60%',
+	},
+	containerLogOut: {
+		justifyContent: 'flex-end',
+		padding: 10,
 	},
 });
 
