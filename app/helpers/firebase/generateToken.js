@@ -11,7 +11,7 @@ const generateToken = async () => {
 		.equalTo(String(code))
 		.once('value')
 		.then((snap) => snap.exists())
-		.catch((err) => console.log('err', err));
+		.catch((e) => console.log('ERROR 423', e));
 
 	if (exists) {
 		return generateToken();

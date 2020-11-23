@@ -26,6 +26,5 @@ module.exports = (async () => {
 			assetExts: assetExts.filter(ext => ext !== 'svg'),
 			sourceExts: [...sourceExts, 'svg'],
 		},
-		assets: ['./app/assets/fonts'],
 	};
 })();

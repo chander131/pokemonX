@@ -87,7 +87,7 @@ const AppNavigator = createStackNavigator({
 	},
 	DetallesEquipo:{
 		screen:DetallesEquipo,
-		navigationOptions:{ title:'DetallesEquipo' },
+		navigationOptions:{ title:'Detalles del equipo' },
 	},
 	Pokemons:{
 		screen:Pokemons,
@@ -95,11 +95,11 @@ const AppNavigator = createStackNavigator({
 	},
 	DetallesPokemon:{
 		screen:DetallesPokemon,
-		navigationOptions:{ title:'DetallesPokemon' },
+		navigationOptions:{ title:'Detalles del Pokemon' },
 	},
 	EquipoAmigo:{
 		screen:EquipoAmigo,
-		navigationOptions:{ title:'EquipoAmigo' },
+		navigationOptions:{ title:'Equipo amigo' },
 	},
 },{
 	headerMode:'none',

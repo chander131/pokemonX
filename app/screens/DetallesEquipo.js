@@ -87,7 +87,6 @@ const DetallesEquipo = ({
 	const remove = () => {
 		const { pokemons } = dataTeam;
 		const pokemonsCopy = pokemons;
-		console.log();
 		pokemonsCopy.splice(selectedIndex, 1);
 		dispatch(setCurrentTeam({ ...dataTeam, pokemons: pokemonsCopy }));
 	};
@@ -188,7 +187,6 @@ const DetallesEquipo = ({
 	}, [isRemoveModalVisible]);
 
 	useEffect(() => {
-		console.log('data del team actual', dataTeam.key);
 		transformData();
 	}, [dataTeam]);
 

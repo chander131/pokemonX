@@ -16,7 +16,6 @@ const Login = props => {
 		try {
 			await GoogleSignin.hasPlayServices();
 			const userInfo = await GoogleSignin.signIn();
-			console.log('user info', userInfo);
 			setUser(userInfo);
 			setLoggedIn(true);
 

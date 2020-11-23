@@ -9,9 +9,9 @@ const Card = ({ text, action, color, index }) => {
 	return (
 		<TouchableOpacity
 			onPress={action}
-			style={[styles.card, {backgroundColor: color ? color : cardColors[getColor(index)]}]}
+			style={[styles.card, {borderColor: color ? color : cardColors[getColor(index)]}]}
 		>
-			<Text style={styles.cardText}>{text}</Text>
+			<Text style={styles.cardText}>{`${index + 1} - ${text}`}</Text>
 		</TouchableOpacity>
 	);
 };
@@ -32,25 +32,26 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-		width: '46%',
-		height: 85,
+		width: '100%',
+		height: 60,
+		borderWidth: 2,
 		borderRadius: 12,
 		marginTop: 7,
 		padding: 10,
-		shadowColor: '#000',
-		shadowOffset: {
-			width: 0,
-			height: 2,
-		},
-		shadowOpacity: 0.25,
-		shadowRadius: 3.84,
-		elevation: 5,
+		// shadowColor: '#000',
+		// shadowOffset: {
+		// 	width: 0,
+		// 	height: 2,
+		// },
+		// shadowOpacity: 0.25,
+		// shadowRadius: 3.84,
+		// elevation: 5,
 	},
 	cardText: {
 		fontSize: 15,
 		textTransform: 'capitalize',
-		color: Colors.White,
-		fontFamily: Fonts.MontserratBold,
+		color: Colors.DarkBlue,
+		fontFamily: Fonts.MuliBold,
 	},
 });
 

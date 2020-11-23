@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 		height: '100%',
 		zIndex: 2,
-		top: -20,
+		top: -10,
 		borderTopRightRadius: 20,
 		borderTopLeftRadius: 20,
 		backgroundColor: Colors.White,
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
 		flexGrow: 1,
 	},
 	text:{
-		fontFamily: Fonts.MontserratRegular,
+		fontFamily: Fonts.Muli,
 		fontSize: normalize(13),
 	},
 	basicDetails: {
@@ -273,7 +273,7 @@ const styles = StyleSheet.create({
 	},
 	label: {
 		color: Colors.DarkGray,
-		fontFamily: Fonts.MontserratBold,
+		fontFamily: Fonts.MuliBold,
 		marginRight: 10,
 	},
 	types: {
@@ -300,7 +300,7 @@ const styles = StyleSheet.create({
 	input: {
 		padding: 0,
 		height: 50,
-		fontFamily: Fonts.MontserratRegular,
+		fontFamily: Fonts.Muli,
 		backgroundColor: Colors.LightGray,
 		paddingHorizontal: 5,
 		borderRadius: 12,

@@ -95,21 +95,25 @@ const Equipos = ({ navigation: { navigate, state: { params, routeName} } }) => {
 	return (
 		<Layout>
 			<View style={styles.container}>
-				<Text style={styles.titulo}>
-					{params.name}
-				</Text>
-				<TouchableOpacity
-					style={[styles.nuevoEquipo, styles.botonAction]}
-					onPress={nuevoEquipo}
-				>
-					<Text style={styles.options}>Crear nuevo equipo</Text>
-				</TouchableOpacity>
-				<TouchableOpacity
-					style={[styles.equipoAmigo, styles.botonAction]}
-					onPress={() => navigate('EquipoAmigo')}
-				>
-					<Text style={styles.options}>Obtener equipo amigo</Text>
-				</TouchableOpacity>
+				<View style={styles.containerHeader}>
+					<Text style={styles.titulo}>
+						{params.name}
+					</Text>
+					<View style={styles.containerHeaderButton}>
+						<TouchableOpacity
+							style={[{ backgroundColor: Colors.Green }, styles.botonAction]}
+							onPress={nuevoEquipo}
+						>
+							<Text style={styles.options}>Nuevo equipo</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={[{ backgroundColor: Colors.Blue }, styles.botonAction]}
+							onPress={() => navigate('EquipoAmigo')}
+						>
+							<Text style={styles.options}>Obtener equipo</Text>
+						</TouchableOpacity>
+					</View>
+				</View>
 
 				<ScrollView>
 					<View style={styles.containerEquipos}>
@@ -118,8 +122,9 @@ const Equipos = ({ navigation: { navigate, state: { params, routeName} } }) => {
 							<View style={styles.myTeams}>
 								{equipos.map((el, index) =>
 									<View key={index} style={styles.myItemTeams}>
-										<View style={{width: '60%', height: 20}}>
-											<Text style={styles.myTeamsText}>{el.name}</Text>
+										<View style={{width: '60%', height: 40}}>
+											<Text style={styles.myTeamsText}>{`${el.name}`}</Text>
+											<Text style={styles.myTeamsText}>{`Pokemons: ${el.pokemons.length}`}</Text>
 										</View>
 										<TouchableOpacity
 											onPress={() => onShare(el)}
@@ -184,19 +189,14 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
-		marginTop: 10,
-		width: '96%',
-		height: 30,
+		// marginTop: 10,
+		width: '48%',
+		// height: 30,
+		height: '100%',
 		borderWidth: 1,
-		borderRadius: 25,
-		alignSelf: 'center',
+		borderRadius: 10,
+		// alignSelf: 'center',
 		elevation: 2,
-	},
-	nuevoEquipo: {
-		backgroundColor: Colors.Green,
-	},
-	equipoAmigo: {
-		backgroundColor: Colors.Blue,
 	},
 	options: {
 		fontFamily: Fonts.MontSerrattBold,
@@ -238,6 +238,19 @@ const styles = StyleSheet.create({
 	myTeamsText: {
 		fontFamily: Fonts.Muli,
 		fontSize: normalize(14),
+	},
+	containerHeader: {
+		justifyContent: 'space-between',
+		alignItems: 'center',
+	},
+	containerHeaderButton: {
+		marginTop: 5,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		width: '100%',
+		height: 40,
+		paddingHorizontal: 5,
 	},
 });
 

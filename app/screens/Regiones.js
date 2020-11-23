@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { withNavigation, NavigationActions } from 'react-navigation';
 import { useDispatch } from 'react-redux';
 
@@ -36,9 +36,8 @@ const Regiones = ({ navigation }) => {
 
 	return (
 		<Layout>
-			<View style={styles.container}>
-				<Text style={styles.titulo}>Regiones</Text>
-				<View style={styles.containerCard}>
+			<ScrollView>
+				<View style={styles.container}>
 					{data.map(({ name }, i) => (
 						<CardRegion
 							action={() => navigation.navigate('Equipos', { name: name })}
@@ -48,7 +47,7 @@ const Regiones = ({ navigation }) => {
 						/>
 					))}
 				</View>
-			</View>
+			</ScrollView>
 		</Layout>
 	);
 };
@@ -57,19 +56,8 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		flexDirection: 'column',
-	},
-	titulo: {
-		fontSize: normalize(20),
-		fontFamily: Fonts.MuliBold,
-		color: Colors.DarkGray,
-		marginHorizontal: 20,
-	},
-	containerCard: {
-		display: 'flex',
-		flexDirection: 'row',
-		justifyContent: 'space-around',
 		alignItems: 'center',
-		flexWrap: 'wrap',
+		padding: 10,
 	},
 });
 

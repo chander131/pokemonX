@@ -75,7 +75,6 @@ const Pokemons = ({ navigation: { navigate, state: { params, routeName } } }) =>
 		setpokedexItem(0);
 		setPokedexSize(-1);
 		fetchData();
-		console.log('data team', dataTeam);
 	}, []);
 
 	return (
@@ -138,6 +137,7 @@ const styles = StyleSheet.create({
 		backgroundColor: Colors.LightGray,
 		paddingHorizontal: 5,
 		borderRadius: 12,
+		marginVertical: 15,
 	},
 	input: {
 		margin: 10,
@@ -152,11 +152,12 @@ const styles = StyleSheet.create({
 	},
 	cardContainerScroll:{
 		height: '60%',
+		width: '100%',
 	},
 	cardContainer: {
-		flexDirection: 'row',
+		display: 'flex',
+		flexDirection: 'column',
 		justifyContent: 'space-around',
-		flexWrap: 'wrap',
 		width: '100%',
 		height: '100%',
 	},

@@ -35,7 +35,7 @@ const verifyToken = async (token) => {
 				};
 			}
 		})
-		.catch((err) => console.log('err', err));
+		.catch((e) => console.log('ERROR 789', e));
 
 };
 
