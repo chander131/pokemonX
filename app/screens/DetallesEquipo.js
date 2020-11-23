@@ -95,7 +95,9 @@ const DetallesEquipo = ({
 		<TouchableOpacity
 			style={styles.containerActionTeam}
 			onPress={params.isAdding ? addTeam : updateTeam}
+			disabled={dataTeam.pokemons.length < 3 || !nameTeam}
 		>
+			<Icon name='upload' size={25} color={Colors.DarkGray} />
 			<Text style={styles.textActionTeam}>Guardar Equipo</Text>
 		</TouchableOpacity>
 	);
@@ -248,11 +250,12 @@ const styles = StyleSheet.create({
 		alignSelf: 'center',
 	},
 	containerActionTeam: {
+		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
 		padding: 10,
 		marginVertical: 10,
-		borderWidth: 1,
+		borderWidth: 2,
 		borderRadius: 25,
 		borderColor: Colors.Purple,
 		alignSelf: 'center',
@@ -262,6 +265,7 @@ const styles = StyleSheet.create({
 		fontFamily: Fonts.Muli,
 		fontSize: normalize(16),
 		textTransform: 'capitalize',
+		marginLeft: 5,
 	},
 	texInput: {
 		width:'100%',

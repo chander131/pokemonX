@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, ImageBackground } from 'react-native';
 import { withNavigation, NavigationActions } from 'react-navigation';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
+
 import googleConfig from '@config/googleConfig';
 import Colors from '@helpers/Colors';
+
+import LoginFondo from '@images/Login.png';
 
 const Login = props => {
 	const [user, setUser ] = useState(null);
@@ -41,7 +44,7 @@ const Login = props => {
 	}, []);
 
 	return (
-		<View style={styles.container}>
+		<ImageBackground  source={LoginFondo} style={styles.imageBackground}>
 			{ loading ? <ActivityIndicator style={styles.loader} size='large' color={Colors.Salmon} /> : (
 				<View style={styles.content}>
 					<GoogleSigninButton
@@ -52,7 +55,7 @@ const Login = props => {
 						disabled={loading}/>
 				</View>
 			)}
-		</View>
+		</ImageBackground>
 	);
 };
 
@@ -66,11 +69,23 @@ const styles = StyleSheet.create({
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
+		position: 'absolute',
+		bottom: 10,
+		backgroundColor: Colors.White,
+		borderRadius: 25,
+		width: '100%',
+		height: '20%',
 	},
 	loader: {
 		justifyContent: 'center',
 		alignItems: 'center',
 		flex: 1,
+	},
+	imageBackground: {
+		flex: 1,
+		resizeMode: 'cover',
+		// width: '90%',
+		// height: '100%',
 	},
 });
 
