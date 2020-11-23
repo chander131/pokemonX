@@ -1,23 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Share } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { withNavigation } from 'react-navigation';
 import { useDispatch } from 'react-redux';
 import database from '@react-native-firebase/database';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { ScrollView } from 'react-native-gesture-handler';
 
 import Layout from '@components/Layout';
 import SinDatos from '@components/SinDatos';
+import CustomButton from '@components/Button/CustomButton';
 
 import Colors from '@helpers/Colors';
 import { Fonts } from '@helpers/Fonts';
 import { normalize } from '@helpers/dimensions';
 import { setCurrentTeam } from '@actions/teams.action';
-import { ScrollView } from 'react-native-gesture-handler';
+import CustomModal from '@components/Modals/CustomModal';
 
 const Equipos = ({ navigation: { navigate, state: { params, routeName} } }) => {
 	const dispatch = useDispatch();
 	const [equipos, setEquipos] = useState([]);
+	const [showModalDelete, setShowModalDelete] = useState(false);
+	const [curremKey, setCurremKey] = useState(-1);
+
+	const setTeamWorking = (team) => dispatch(setCurrentTeam(team));
 
 	const nuevoEquipo = () => {
 		const detalles = {
@@ -28,7 +34,7 @@ const Equipos = ({ navigation: { navigate, state: { params, routeName} } }) => {
 			user_id: auth().currentUser.uid,
 			region_user: `${params.name}_${auth().currentUser.uid}`,
 		};
-		dispatch(setCurrentTeam(detalles));
+		setTeamWorking(detalles);
 		navigate('DetallesEquipo', { isAdding: true });
 	};
 
@@ -43,10 +49,30 @@ const Equipos = ({ navigation: { navigate, state: { params, routeName} } }) => {
 		setEquipos(list);
 	};
 
-	const deleteTeam = (key) => {
-		// setIsRemoveModalVisible(false);
-		database().ref('teams').child(key).remove();
-		// getTeams();
+	const deleteTeam = () => {
+		setShowModalDelete(false);
+		database().ref('teams').child(curremKey).remove();
+	};
+
+	const ViewEditTeam = ({ setTeam, team }) => (
+		<TouchableOpacity
+			onPress={()=> {
+				setTeam(team);
+				navigate('DetallesEquipo', { isAdding: false });
+			}}
+		>
+			<Icon name='edit' size={25} color={Colors.DarkGray} />
+		</TouchableOpacity>
+	);
+
+	const onShare = async (team) => {
+		try {
+			await Share.share({
+				message:
+				`Obtén mi equipo de pokemons para la region ${team.region_name} 
+				http://pokemonX.com/${team.region_name}/${team.token}`,
+			});
+		} catch (e) { console.log('ERROR 11', e);}
 	};
 
 	useEffect(() => {
@@ -95,18 +121,15 @@ const Equipos = ({ navigation: { navigate, state: { params, routeName} } }) => {
 											<Text style={styles.myTeamsText}>{el.name}</Text>
 										</View>
 										<TouchableOpacity
-											onPress={() => {
-												// onShare(el);
-											}}
+											onPress={() => onShare(el)}
 										>
 											<Icon name='share' size={25} color={Colors.DarkGray} />
 										</TouchableOpacity>
-										{/* <TeamEditor onSetDetails={setTeamDetails} item={el} /> */}
+										<ViewEditTeam setTeam={setTeamWorking} team={el} />
 										<TouchableOpacity
 											onPress={() => {
-												// setSelectedKey(el.key),
-												// setIsRemoveModalVisible(true);
-												deleteTeam(el.key);
+												setCurremKey(el.key);
+												setShowModalDelete(true);
 											}}
 										>
 											<Icon name='trash' size={25} color={Colors.DarkGray} />
@@ -117,6 +140,19 @@ const Equipos = ({ navigation: { navigate, state: { params, routeName} } }) => {
 						) : (<SinDatos />)}
 					</View>
 				</ScrollView>
+				<CustomModal
+					isVisible={showModalDelete}
+					setIsVisible={setShowModalDelete}
+				>
+					<View style={{alignItems: 'center'}}>
+						<Text style={[styles.text, {textAlign: 'center'}]}>¿Deseas eliminar este equipo?</Text>
+						<CustomButton
+							text='Sí, eliminar'
+							action={() => deleteTeam()}
+							width='80%'
+						/>
+					</View>
+				</CustomModal>
 				<View style={styles.containerCard} />
 			</View>
 		</Layout>

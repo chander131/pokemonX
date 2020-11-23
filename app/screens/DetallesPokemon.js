@@ -79,20 +79,16 @@ const Screen = ({ navigation: { navigate, state: { params, routeName }} }) => {
 		const currentPokemon = getCurrentPokemon();
 		pokemonsCopy.splice(params.selectedIndex, 1, currentPokemon);
 		return {
-			pokemon: pokemonsCopy,
+			...teamData,
+			pokemons: pokemonsCopy,
 		};
 	};
 
 	const handleAction = () => params.isAdding ? add() : edit();
 
-	const setPokemons = useCallback(
-		() => dispatch(
-			setCurrentTeam(handleAction())),
-		[dispatch, data, typedText]
-	);
+	const setPokemons = () => dispatch(setCurrentTeam(handleAction()));
 
-
-	const PokemonAdder = React.memo(({ onSetPokemon }) => (
+	const PokemonAdder = ({ onSetPokemon }) => (
 		<CustomButton
 			text='¡Listo!'
 			action={() => {
@@ -103,7 +99,7 @@ const Screen = ({ navigation: { navigate, state: { params, routeName }} }) => {
 			width='80%'
 			isDisabled={typedText.length === 0}
 		/>
-	));
+	);
 
 	useEffect(() => {
 		if (!statePokemon.isLoading) {

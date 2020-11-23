@@ -9,7 +9,7 @@ import {
 	Image,
 } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import database from '@react-native-firebase/database';
@@ -17,6 +17,8 @@ import database from '@react-native-firebase/database';
 import Layout from '@components/Layout';
 import Badge from '@components/Badge';
 import SinDatos from '@components/SinDatos';
+import CustomModal from '@components/Modals/CustomModal';
+import CustomButton from '@components/Button/CustomButton';
 
 import Colors from '@helpers/Colors';
 import { Fonts } from '@helpers/Fonts';
@@ -24,8 +26,16 @@ import { normalize } from '@helpers/dimensions';
 import generateToken from '@helpers/firebase/generateToken';
 
 import Pokeball from '@images/pokeball.png';
+import { setCurrentTeam } from '@actions/teams.action';
 
-const DetallesEquipo = ({ navigation: { navigate, state: { params, routeName } } }) => {
+const DetallesEquipo = ({
+	navigation: {
+		navigate,
+		goBack,
+		state: { params, routeName },
+	},
+}) => {
+	const dispatch = useDispatch();
 	const dataTeam = useSelector((state) => state.teams.curremItem);
 	const [nameTeam, setNameTeam] = useState(dataTeam.name);
 	const [listPokemons, setListPokemons] = useState([]);
@@ -33,10 +43,6 @@ const DetallesEquipo = ({ navigation: { navigate, state: { params, routeName } }
 	const [isRemoveModalVisible, setIsRemoveModalVisible] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(false);
-
-	useEffect(() => {
-		console.log('currem item', dataTeam);
-	}, [dataTeam]);
 
 	const addTeam = async () => {
 		setLoading(true);
@@ -48,10 +54,20 @@ const DetallesEquipo = ({ navigation: { navigate, state: { params, routeName } }
 		});
 		setIsSuccessModalVisible(true);
 		setLoading(false);
-		navigate('Equipos');
 	};
 
-	const updateTeam = () => {};
+	const updateTeam = () => {
+		setLoading(true);
+		const teamDataCopy = dataTeam;
+		const key = teamDataCopy.key;
+		delete teamDataCopy.key;
+		database().ref('teams').child(key).update({
+			...dataTeam,
+			name: nameTeam,
+		});
+		setIsSuccessModalVisible(true);
+		setLoading(false);
+	};
 
 	const handleOpenItem = (index) => {
 		const modData = listPokemons;
@@ -66,6 +82,14 @@ const DetallesEquipo = ({ navigation: { navigate, state: { params, routeName } }
 			list.push({...item, isOpen: false});
 		}
 		setListPokemons(list);
+	};
+
+	const remove = () => {
+		const { pokemons } = dataTeam;
+		const pokemonsCopy = pokemons;
+		console.log();
+		pokemonsCopy.splice(selectedIndex, 1);
+		dispatch(setCurrentTeam({ ...dataTeam, pokemons: pokemonsCopy }));
 	};
 
 	const ViewActionTeam = () => (
@@ -110,7 +134,7 @@ const DetallesEquipo = ({ navigation: { navigate, state: { params, routeName } }
 					</View>
 					<View style={styles.actions}>
 						<TouchableOpacity
-							onPress={()=>navigate('Pokemon', {
+							onPress={()=>navigate('Pokemons', {
 								isAdding: false,
 								selectedIndex: index,
 							})}
@@ -148,11 +172,23 @@ const DetallesEquipo = ({ navigation: { navigate, state: { params, routeName } }
 		);
 	};
 
+	const PokemonRemover = ({ onRemovePokemon }) => (
+		<CustomButton
+			text='Sí, eliminar'
+			action={() => {
+				onRemovePokemon();
+				setIsRemoveModalVisible(false);
+			}}
+			width='80%'
+		/>
+	);
+
 	useEffect(() => {
 		if (!isRemoveModalVisible) {setSelectedIndex(-1);}
 	}, [isRemoveModalVisible]);
 
 	useEffect(() => {
+		console.log('data del team actual', dataTeam.key);
 		transformData();
 	}, [dataTeam]);
 
@@ -182,6 +218,26 @@ const DetallesEquipo = ({ navigation: { navigate, state: { params, routeName } }
 				renderItem={({item, index}) => ItemList(item, index)}
 				keyExtractor={(item, index) => index.toString()}
 			/>
+			<CustomModal isVisible={isSuccessModalVisible} setIsVisible={setIsSuccessModalVisible}>
+				<View style={{alignItems: 'center'}}>
+					<Icon name='check-circle' size={30} color={Colors.Green} />
+					<Text style={[styles.text, {textAlign: 'center'}]}>¡Equipo guardado exitosamente!</Text>
+					<CustomButton
+						text='De acuerdo'
+						action={() => {
+							setIsSuccessModalVisible(false);
+							goBack();
+						}}
+						width='80%'
+					/>
+				</View>
+			</CustomModal>
+			<CustomModal isVisible={isRemoveModalVisible} setIsVisible={setIsRemoveModalVisible}>
+				<View style={{alignItems: 'center'}}>
+					<Text style={[styles.text, {textAlign: 'center'}]}>¿Deseas eliminar este pokemon?</Text>
+					<PokemonRemover onRemovePokemon={remove} />
+				</View>
+			</CustomModal>
 		</Layout>
 	);
 };
